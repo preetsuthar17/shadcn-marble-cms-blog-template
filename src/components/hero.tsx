@@ -44,11 +44,11 @@ export default function Hero() {
         </Button>
         <Button asChild className="h-11 font-medium" variant="outline">
           <Link
-            href="https://marblecms.com"
+            href="https://github.com/preetsuthar17/shadcn-marble-cms-blog-template"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Learn More
+            Source Code
           </Link>
         </Button>
       </div>
