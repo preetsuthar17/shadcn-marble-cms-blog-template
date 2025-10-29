@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "shadcn + Marble CMS Blog Template",
+  title: "Marble CMS with shadcn Blog Template",
   description: "A simple CMS blog template built with shadcn and Marble CMS",
 };
 
