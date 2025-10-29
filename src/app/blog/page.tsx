@@ -23,7 +23,7 @@ export default async function BlogPage() {
   const { posts } = data;
 
   return (
-    <div className="container mx-auto flex flex-col gap-8 px-4 py-8">
+    <div className="container mx-auto flex flex-col gap-8 px-4 py-18">
       <div className="flex items-center gap-3">
         <Button asChild size={"icon"} variant={"outline"}>
           <Link href="/">

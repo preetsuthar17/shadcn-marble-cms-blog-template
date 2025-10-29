@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { codeToHtml } from "shiki";
 import { Prose } from "@/components/prose";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,48 @@ export async function generateStaticParams() {
   }));
 }
 
+async function highlightCodeBlocks(html: string): Promise<string> {
+  // Match <pre><code class="language-xxx">...</code></pre> blocks
+  const codeBlockRegex =
+    /<pre>\s*<code\s+class="language-([\w+-]+)">([\s\S]*?)<\/code>\s*<\/pre>/gim;
+
+  // Minimal HTML entity decode for typical code content
+  const decodeEntities = (input: string) =>
+    input
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'");
+
+  let result = html;
+  const matches = Array.from(html.matchAll(codeBlockRegex));
+
+  for (const match of matches) {
+    const fullMatch = match[0];
+    const lang = match[1];
+    const rawCode = match[2] ?? "";
+    const code = decodeEntities(rawCode);
+
+    let highlighted = fullMatch;
+    try {
+      highlighted = await codeToHtml(code, {
+        lang,
+        themes: {
+          light: "github-light",
+          dark: "github-dark",
+        },
+      });
+    } catch {
+      // If highlighting fails, keep the original block
+    }
+
+    result = result.replace(fullMatch, highlighted);
+  }
+
+  return result;
+}
+
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
   const data = await getSinglePost(slug);
@@ -36,8 +79,10 @@ export default async function PostPage({ params }: PostPageProps) {
 
   const { post } = data;
 
+  const highlightedHtml = await highlightCodeBlocks(post.content);
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-16">
       <div className="mx-auto flex w-full flex-col gap-8">
         <Button asChild className="w-fit" variant="outline">
           <Link href="/blog">
@@ -73,7 +118,7 @@ export default async function PostPage({ params }: PostPageProps) {
           )}
         </header>
 
-        <Prose html={post.content} />
+        <Prose html={highlightedHtml} />
       </div>
     </div>
   );

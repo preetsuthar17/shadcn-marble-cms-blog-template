@@ -18,7 +18,7 @@ export function Prose({ children, html, className, ...props }: ProseProps) {
   return (
     <article
       className={cn(
-        "prose mx-auto w-full max-w-4xl prose-img:rounded-xl prose-p:text-justify font-sans prose-h1:font-bold prose-headings:font-normal prose-headings:font-serif prose-a:text-primary prose-h1:text-xl",
+        "prose dark:prose-invert mx-auto w-full max-w-4xl prose-img:rounded-xl prose-p:text-justify font-sans prose-h1:font-bold prose-headings:font-normal prose-headings:font-serif prose-a:text-primary prose-h1:text-xl",
         className
       )}
       {...props}

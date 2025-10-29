@@ -6,7 +6,7 @@ export default function Hero() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8">
       <h1 className="flex flex-wrap items-center justify-center gap-2 text-center font-bold text-4xl tracking-tight">
-        Marble\u00A0CMS
+        Marble CMS
         <span className="inline-flex items-center gap-2">
           with
           <span className="inline-flex items-center">
@@ -39,10 +39,10 @@ export default function Hero() {
       </p>
 
       <div className="flex gap-2">
-        <Button asChild>
+        <Button asChild className="h-11 font-medium">
           <Link href="/blog">View Blog</Link>
         </Button>
-        <Button asChild variant="outline">
+        <Button asChild className="h-11 font-medium" variant="outline">
           <Link
             href="https://marblecms.com"
             rel="noopener noreferrer"
