@@ -47,7 +47,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.98 0 0);
+  --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
@@ -55,7 +55,7 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: oklch(0.21 0.006 285.885);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
+  --secondary: oklch(0.977 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
@@ -121,34 +121,44 @@
   body {
     @apply bg-background text-foreground max-w-4xl w-full mx-auto px-4;
   }
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply font-serif font-bold;
+  h1 {
+    @apply tracking-tight;
   }
 }
-
-p {
-  font-family: var(--font-geist-sans) !important;
-}
-
-h1,
+/* Headings */
 h2,
 h3 {
   font-weight: 600;
-  letter-spacing: -0.02em;
 }
 
+h4,
+h5,
+h6 {
+  font-weight: 500;
+}
+
+/* Typography */
+p {
+  font-family: var(--font-geist-sans) !important;
+  line-height: 1.3;
+}
+
+/* Code & Preformatted blocks */
 code,
 pre {
   font-family: var(--font-geist-mono) !important;
 }
 
 pre {
-  border: 1px solid var(--border);
+  background-color: var(--secondary) !important;
 }
 
+/* Dark mode overrides */
+.dark pre {
+  background-color: var(--foreground) !important;
+}
+
+/* Responsive, accessibility, and system-level tweaks */
 @layer base {
   :root {
     --scroll-mt: calc(72px + env(safe-area-inset-top));
@@ -170,6 +180,7 @@ pre {
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Input & button accessibility */
   :where(a, button, [role="button"], input, select, textarea) {
     touch-action: manipulation;
   }
@@ -181,6 +192,7 @@ pre {
     outline: none;
   }
 
+  /* Media: ensure no unexpected inline/overflow behavior */
   img,
   svg,
   video,
@@ -197,11 +209,13 @@ pre {
     height: auto;
   }
 
+  /* Selection highlight */
   ::selection {
     background: color-mix(in oklab, var(--primary) 18%, transparent);
     color: var(--primary-foreground);
   }
 
+  /* Anchor scroll support for headings */
   h1,
   h2,
   h3,
@@ -211,10 +225,12 @@ pre {
     scroll-margin-top: var(--scroll-mt);
   }
 
+  /* Contain scroll during modals, dialogs, drawers */
   :where([role="dialog"], [data-dialog], [data-drawer], dialog) {
     overscroll-behavior: contain;
   }
 
+  /* Mobile font size for form elements */
   @media (max-width: 767px) {
     input,
     textarea,
@@ -223,6 +239,7 @@ pre {
     }
   }
 
+  /* Honor prefers-reduced-motion user setting */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
