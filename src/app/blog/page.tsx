@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { getPosts } from "@/lib/query";
 
 // Revalidate this page every hour
@@ -12,8 +13,8 @@ export default async function BlogPage() {
 
   if (!data?.posts) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="mb-8 font-bold text-3xl">Blog</h1>
+      <div className="container mx-auto flex flex-col gap-8 px-4 py-8">
+        <h1 className="font-bold text-3xl">Blog</h1>
         <p>No posts found. Please check your Marble CMS configuration.</p>
       </div>
     );
@@ -31,32 +32,35 @@ export default async function BlogPage() {
         </Button>
         <h1 className="font-bold text-3xl tracking-tight">Blog</h1>
       </div>
-      <section className="space-y-6">
+      <section className="group/blog-list flex flex-col gap-6">
         {posts.map((post) => (
-          <article
-            className="border-border border-b pb-6 last:border-b-0"
+          <div
+            className="flex flex-col gap-6 transition-opacity duration-200 hover:opacity-100 group-hover/blog-card:opacity-100 group-hover/blog-list:opacity-40"
             key={post.id}
           >
-            <div className="space-y-2">
-              <h2 className="font-semibold text-2xl transition-colors hover:text-primary">
-                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-              </h2>
-              {post.excerpt && (
-                <p className="text-muted-foreground">{post.excerpt}</p>
-              )}
-              <div className="flex items-center gap-4 text-muted-foreground text-sm">
-                <time dateTime={post.publishedAt}>
-                  {new Date(post.publishedAt).toLocaleDateString()}
-                </time>
-                {post.author && <span>by {post.author.name}</span>}
-                {post.category && (
-                  <span className="rounded-md bg-secondary px-2 py-1 text-secondary-foreground text-xs">
-                    {post.category.name}
-                  </span>
+            <article className="group/blog-card">
+              <div className="flex flex-col gap-2">
+                <h2 className="font-semibold text-2xl transition-colors hover:text-primary">
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </h2>
+                {post.excerpt && (
+                  <p className="text-muted-foreground">{post.excerpt}</p>
                 )}
+                <div className="flex items-center gap-4 text-muted-foreground text-sm">
+                  <time dateTime={post.publishedAt}>
+                    {new Date(post.publishedAt).toLocaleDateString()}
+                  </time>
+                  {post.author && <span>by {post.author.name}</span>}
+                  {post.category && (
+                    <span className="rounded-md bg-secondary px-2 py-1 text-secondary-foreground text-xs">
+                      {post.category.name}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-          </article>
+            </article>
+            <Separator />
+          </div>
         ))}
       </section>
     </div>

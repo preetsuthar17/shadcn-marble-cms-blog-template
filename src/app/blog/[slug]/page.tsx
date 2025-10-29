@@ -1,15 +1,18 @@
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Prose } from "@/components/prose";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getPosts, getSinglePost } from "@/lib/query";
 
 export const revalidate = 3600;
 
-interface PostPageProps {
-  params: Promise<{
+type PostPageProps = {
+  params: {
     slug: string;
-  }>;
-}
+  };
+};
 
 export async function generateStaticParams() {
   const data = await getPosts();
@@ -35,28 +38,24 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mx-auto max-w-4xl">
-        <div className="mb-8">
-          <Link
-            className="font-medium text-primary text-sm hover:underline"
-            href="/blog"
-          >
-            ← Back to Blog
+      <div className="mx-auto flex w-full flex-col gap-8">
+        <Button asChild className="w-fit" variant="outline">
+          <Link href="/blog">
+            <ArrowLeft />
+            Back to Blog
           </Link>
-        </div>
+        </Button>
 
-        <header className="mb-8">
-          <h1 className="mb-4 font-bold text-4xl">{post.title}</h1>
+        <header className="flex flex-col gap-6">
+          <h1 className="font-bold text-4xl">{post.title}</h1>
 
-          <div className="mb-6 flex items-center gap-4 text-muted-foreground">
-            <time dateTime={post.publishedAt}>
+          <div className="flex items-center gap-4 text-muted-foreground">
+            <time className="font-mono text-sm" dateTime={post.publishedAt}>
               {new Date(post.publishedAt).toLocaleDateString()}
             </time>
             {post.author && <span>by {post.author.name}</span>}
             {post.category && (
-              <span className="rounded-md bg-secondary px-2 py-1 text-secondary-foreground text-sm">
-                {post.category.name}
-              </span>
+              <Badge variant="secondary">{post.category.name}</Badge>
             )}
           </div>
 

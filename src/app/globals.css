@@ -5,6 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -116,6 +119,117 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground max-w-4xl w-full mx-auto px-4;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif font-semibold;
+  }
+}
+
+p {
+  font-family: var(--font-geist-sans) !important;
+}
+
+code,
+pre {
+  font-family: var(--font-geist-mono) !important;
+}
+
+/* Web guidelines: base UX/accessibility/performance defaults */
+@layer base {
+  :root {
+    /* Used for anchored headings offset; respects safe areas */
+    --scroll-mt: calc(72px + env(safe-area-inset-top));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    -webkit-tap-highlight-color: color-mix(
+      in oklab,
+      var(--ring) 20%,
+      transparent
+    );
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Keyboard focus visibility per APG */
+  :where(a, button, [role="button"], input, select, textarea) {
+    touch-action: manipulation;
+  }
+  :where(a, button, [role="button"], input, select, textarea):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  /* Avoid double outlines when authors use :focus styles */
+  *:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Prevent CLS for media and ensure responsive sizing */
+  img,
+  svg,
+  video,
+  canvas,
+  audio,
+  iframe,
+  embed,
+  object {
+    display: block;
+  }
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Better text selection affordance */
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 18%, transparent);
+    color: var(--primary-foreground);
+  }
+
+  /* Anchor link offset for headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    scroll-margin-top: var(--scroll-mt);
+  }
+
+  /* Contain scroll chaining in dialogs/drawers */
+  :where([role="dialog"], [data-dialog], [data-drawer], dialog) {
+    overscroll-behavior: contain;
+  }
+
+  /* Ensure comfortable input size on mobile */
+  @media (max-width: 767px) {
+    input,
+    textarea,
+    select {
+      font-size: 16px;
+    }
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

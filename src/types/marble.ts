@@ -1,51 +1,63 @@
-export interface MarblePost {
+/**
+ * String aliases to document intent without changing runtime behavior.
+ * Aligns with guidelines for accurate naming and locale-aware data handling.
+ */
+export type ISODateString = string; // e.g., 2025-01-31T12:34:56.000Z
+export type Slug = string; // kebab-case identifier
+export type EmailString = string; // RFC 5322-compatible email
+export type UrlString = string; // absolute or protocol-relative URL
+
+export type MarblePost = {
   id: string;
   title: string;
-  slug: string;
+  slug: Slug;
   content: string;
   excerpt?: string;
-  publishedAt: string;
-  updatedAt: string;
+  /** ISO 8601 string */
+  publishedAt: ISODateString;
+  /** ISO 8601 string */
+  updatedAt: ISODateString;
   author?: MarbleAuthor;
   category?: MarbleCategory;
   tags?: MarbleTag[];
-  featuredImage?: string;
+  /** Image URL */
+  featuredImage?: UrlString;
   status: "draft" | "published" | "archived";
-}
+};
 
-export interface MarbleAuthor {
+export type MarbleAuthor = {
   id: string;
   name: string;
-  email: string;
+  email: EmailString;
   bio?: string;
-  avatar?: string;
+  avatar?: UrlString;
   socialLinks?: {
-    twitter?: string;
-    linkedin?: string;
-    github?: string;
+    twitter?: UrlString;
+    linkedin?: UrlString;
+    github?: UrlString;
   };
-}
+};
 
-export interface MarbleCategory {
+export type MarbleCategory = {
   id: string;
   name: string;
-  slug: string;
+  slug: Slug;
   description?: string;
   color?: string;
-}
+};
 
-export interface MarbleTag {
+export type MarbleTag = {
   id: string;
   name: string;
-  slug: string;
+  slug: Slug;
   color?: string;
-}
+};
 
-export interface MarblePostResponse {
+export type MarblePostResponse = {
   post: MarblePost;
-}
+};
 
-export interface MarblePostListResponse {
+export type MarblePostListResponse = {
   posts: MarblePost[];
   pagination?: {
     page: number;
@@ -53,16 +65,16 @@ export interface MarblePostListResponse {
     total: number;
     totalPages: number;
   };
-}
+};
 
-export interface MarbleAuthorListResponse {
+export type MarbleAuthorListResponse = {
   authors: MarbleAuthor[];
-}
+};
 
-export interface MarbleCategoryListResponse {
+export type MarbleCategoryListResponse = {
   categories: MarbleCategory[];
-}
+};
 
-export interface MarbleTagListResponse {
+export type MarbleTagListResponse = {
   tags: MarbleTag[];
-}
+};
